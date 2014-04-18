@@ -18,15 +18,18 @@ public class NavigationView extends ViewPart {
     // a TreeViewer is a Jface widget, which shows trees
     viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 
-    // We set the ContentProvider for the TreeViewer. This class prepares data
+    // We set the ContentProvider for the TreeViewer. This class prepares
+    // data
     // to be shown by the TreeViewer.
     viewer.setContentProvider(new ViewContentProvider());
 
-    // We set the LabelProvider. This class decides how elements in the tree are
+    // We set the LabelProvider. This class decides how elements in the tree
+    // are
     // shown by returning a text and an optional icon.
     viewer.setLabelProvider(new ViewLabelProvider());
 
-    // Here we set the root of the tree. The framework will ask for more data
+    // Here we set the root of the tree. The framework will ask for more
+    // data
     // when the user expands tree items.
     viewer.setInput(createModel());
   }
@@ -35,9 +38,7 @@ public class NavigationView extends ViewPart {
    * We will set up a model to initialize tree hierarchy.
    */
   private Object createModel() {
-    // Our root item is simply a dummy Object. Here you need to provide your own
-    // root class.
-    return new Object();
+    return new FolderTree();
   }
 
   /**

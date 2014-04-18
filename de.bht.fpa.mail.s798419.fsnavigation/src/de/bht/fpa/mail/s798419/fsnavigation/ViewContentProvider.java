@@ -16,10 +16,9 @@ public class ViewContentProvider implements ITreeContentProvider {
    */
   @Override
   public Object[] getChildren(Object parentElement) {
-    // For every parentElement, we return an empty array. That means that for
-    // every given tree item, we say it has no children. Here you should cast
-    // the parentElement to your own class and return its children.
-    return new Object[0];
+    FolderTree newItem = new FolderTree(parentElement);
+    Object[] listOfAllChildren = newItem.listAllSubElements();
+    return listOfAllChildren;
   }
 
   /**
@@ -35,14 +34,13 @@ public class ViewContentProvider implements ITreeContentProvider {
    */
   @Override
   public boolean hasChildren(Object element) {
-    // For every element, we say to the framework that is has no children. Here
-    // you should cast the element to your own class and check if it has
-    // children.
-    return false;
+      FolderTree elements = new FolderTree(element);
+      return elements.hasSubElements();
   }
 
   // ==========================================================================
-  // In our simple tree, you don't need to change any of the following methods.
+  // In our simple tree, you don't need to change any of the following
+  // methods.
   // ==========================================================================
 
   @Override

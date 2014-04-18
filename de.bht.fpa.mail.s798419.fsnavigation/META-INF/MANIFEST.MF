@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Fsnavigation
-Bundle-SymbolicName: de.bht.fpa.mail.s798419.fsnavigation
+Bundle-SymbolicName: de.bht.fpa.mail.s798419.fsnavigation;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.bht.fpa.mail.s798419.fsnavigation.Activator
 Require-Bundle: org.eclipse.ui,
