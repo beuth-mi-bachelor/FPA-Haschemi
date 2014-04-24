@@ -12,6 +12,6 @@ public class ViewLabelProvider extends LabelProvider {
 
   @Override
   public Image getImage(Object element) {
-    return super.getImage(element);
+    return new FolderItem(element).getImage();
   }
 }
