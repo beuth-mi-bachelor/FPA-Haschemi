@@ -3,32 +3,23 @@ package de.bht.fpa.mail.s798419.fsnavigation.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.jface.dialogs.MessageDialog;
 
-/**
- * Our sample handler extends AbstractHandler, an IHandler base class.
- * @see org.eclipse.core.commands.IHandler
- * @see org.eclipse.core.commands.AbstractHandler
- */
 public class SetBaseDir extends AbstractHandler {
-	/**
-	 * The constructor.
-	 */
-	public SetBaseDir() {
-	}
 
-	/**
-	 * the command has been executed, so extract extract the needed information
-	 * from the application context.
-	 */
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(
-				window.getShell(),
-				"Fsnavigation",
-				"Set Base Directory");
-		return null;
-	}
+  public SetBaseDir() {
+  }
+
+  @Override
+  public Object execute(ExecutionEvent event) throws ExecutionException {
+    IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+    DirectoryDialog setBaseDirDialog = new DirectoryDialog(window.getShell());
+    setBaseDirDialog.setMessage("choose directory");
+    setBaseDirDialog.setText("please choose your new favorite base directory for viewing");
+    String newBaseDir = setBaseDirDialog.open();
+    System.out.println(newBaseDir);
+    return null;
+  }
 }
