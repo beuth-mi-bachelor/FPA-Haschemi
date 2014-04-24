@@ -4,7 +4,7 @@
   <local-check-config name="FPA Checkstyle" location="/eclipse-configuration/fpa_checks.xml" type="project" description="">
     <additional-data name="protect-config-file" value="true"/>
   </local-check-config>
-  <fileset name="all" enabled="true" check-config-name="FPA Checkstyle" local="true">
+  <fileset name="all" enabled="true" check-config-name="FPA" local="false">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
 </fileset-config>
