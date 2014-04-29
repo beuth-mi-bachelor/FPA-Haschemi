@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
-  public static final String ID = "de.bht.fpa.s798419.fsnavigation.NavigationView";
+  public static final String ID = "de.bht.fpa.mail.s798419.fsnavigation.NavigationView";
   private TreeViewer viewer;
 
   /**
@@ -32,6 +32,11 @@ public class NavigationView extends ViewPart {
     // data
     // when the user expands tree items.
     viewer.setInput(createModel());
+
+  }
+
+  public void changeModel(Object m) {
+    viewer.setInput(m);
   }
 
   /**

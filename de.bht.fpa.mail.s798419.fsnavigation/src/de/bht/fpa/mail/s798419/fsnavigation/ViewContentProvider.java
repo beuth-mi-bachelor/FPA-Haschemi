@@ -34,14 +34,9 @@ public class ViewContentProvider implements ITreeContentProvider {
    */
   @Override
   public boolean hasChildren(Object element) {
-      FolderTree elements = new FolderTree(element);
-      return elements.hasSubElements();
+    FolderTree elements = new FolderTree(element);
+    return elements.hasSubElements();
   }
-
-  // ==========================================================================
-  // In our simple tree, you don't need to change any of the following
-  // methods.
-  // ==========================================================================
 
   @Override
   public Object[] getElements(Object parent) {
