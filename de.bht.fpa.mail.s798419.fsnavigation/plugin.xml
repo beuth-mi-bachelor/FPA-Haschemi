@@ -28,11 +28,21 @@
             class="de.bht.fpa.mail.s798419.fsnavigation.handlers.SetBaseDir"
             commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.setBaseDirectory">
       </handler>
+      <handler
+            class="de.bht.fpa.mail.s798419.fsnavigation.handlers.HistoryViewer"
+            commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.historyViewer">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.setBaseDirectory"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+5">
+      </key>
+      <key
+            commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.historyViewer"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+6">
@@ -49,6 +59,11 @@
             <command
                   commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.setBaseDirectory"
                   id="de.bht.fpa.mail.s798419.fsnavigation.menus.setBaseDirectory"
+                  mnemonic="S">
+            </command>
+            <command
+                  commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.historyViewer"
+                  id="de.bht.fpa.mail.s798419.fsnavigation.menus.historyViewer"
                   mnemonic="S">
             </command>
          </menu>
@@ -76,6 +91,15 @@
             id="de.bht.fpa.mail.s798419.fsnavigation.commands.setBaseDirectory"
             name="Set Base Directory">
       </command>
+      <command
+            categoryId="de.bht.fpa.mail.s798419.fsnavigation.commands.category"
+            id="de.bht.fpa.mail.s798419.fsnavigation.commands.historyViewer"
+            name="HistoryViewer">
+      </command>
+      <category
+            id="de.bht.fpa.mail.s798419.fsnavigation.commands.category"
+            name="History Category">
+      </category>
    </extension>
 
 </plugin>

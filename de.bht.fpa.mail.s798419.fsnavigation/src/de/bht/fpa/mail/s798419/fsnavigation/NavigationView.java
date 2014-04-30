@@ -1,10 +1,5 @@
 package de.bht.fpa.mail.s798419.fsnavigation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
