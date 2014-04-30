@@ -24,7 +24,6 @@ public class SetBaseDir extends AbstractHandler {
     String newBaseDir = setBaseDirDialog.open();
 
     if (newBaseDir != null) {
-      System.out.println(newBaseDir);
       IWorkbenchPage page = window.getActivePage();
       NavigationView view = (NavigationView) page.findView(NavigationView.ID);
       view.changeModel(new FolderTree(newBaseDir));

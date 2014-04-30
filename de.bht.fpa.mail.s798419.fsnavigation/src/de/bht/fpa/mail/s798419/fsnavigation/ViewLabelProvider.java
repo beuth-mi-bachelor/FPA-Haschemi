@@ -7,7 +7,7 @@ public class ViewLabelProvider extends LabelProvider {
   @Override
   public String getText(Object element) {
     FolderItem itemToBeDisplayed = new FolderItem(element);
-    return super.getText(itemToBeDisplayed);
+    return itemToBeDisplayed.displayName();
   }
 
   @Override

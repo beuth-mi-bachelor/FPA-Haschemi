@@ -50,6 +50,10 @@ public class FolderItem {
 
   @Override
   public String toString() {
+    return this.item.getAbsolutePath();
+  }
+  
+  public String displayName() {
     return this.item.getName();
   }
 

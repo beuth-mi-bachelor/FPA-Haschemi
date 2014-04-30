@@ -38,6 +38,10 @@ public class FolderTree {
   public String toString() {
     return this.item.toString();
   }
+  
+  public String displayName() {
+    return this.item.displayName();
+  }
 
   public Image getImage() {
     return this.item.getImage();

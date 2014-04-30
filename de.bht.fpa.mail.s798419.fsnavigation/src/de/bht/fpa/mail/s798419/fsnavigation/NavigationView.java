@@ -1,13 +1,28 @@
 package de.bht.fpa.mail.s798419.fsnavigation;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 public class NavigationView extends ViewPart {
   public static final String ID = "de.bht.fpa.mail.s798419.fsnavigation.NavigationView";
   private TreeViewer viewer;
+  private IMemento memento;
+
+  @Override
+  public void init(final IViewSite site, final IMemento memento) throws PartInitException {
+    init(site);
+    this.memento = memento;
+  }
 
   /**
    * This is a callback that will allow us to create the viewer and initialize
@@ -15,24 +30,18 @@ public class NavigationView extends ViewPart {
    */
   @Override
   public void createPartControl(Composite parent) {
-    // a TreeViewer is a Jface widget, which shows trees
     viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-
-    // We set the ContentProvider for the TreeViewer. This class prepares
-    // data
-    // to be shown by the TreeViewer.
     viewer.setContentProvider(new ViewContentProvider());
-
-    // We set the LabelProvider. This class decides how elements in the tree
-    // are
-    // shown by returning a text and an optional icon.
     viewer.setLabelProvider(new ViewLabelProvider());
-
-    // Here we set the root of the tree. The framework will ask for more
-    // data
-    // when the user expands tree items.
     viewer.setInput(createModel());
+    this.restoreState();
+  }
 
+  private void restoreState() {
+    IMemento selectionsMomento = this.memento.getChild("startPath");
+    if (selectionsMomento != null) {
+      this.viewer.setInput(new FolderTree(selectionsMomento.getID()));
+    }
   }
 
   public void changeModel(Object m) {
@@ -53,4 +62,11 @@ public class NavigationView extends ViewPart {
   public void setFocus() {
     viewer.getControl().setFocus();
   }
+
+  @Override
+  public void saveState(final IMemento memento) {
+    String currentFolder = this.viewer.getInput().toString();
+    this.memento = memento.createChild("startPath", currentFolder);
+  }
+
 }
