@@ -5,15 +5,6 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class ViewContentProvider implements ITreeContentProvider {
 
-  /**
-   * This method is called when the user expands a tree node in the View. The
-   * parameter of the method is the selected item, and the method is expected to
-   * return the direct children of the item.
-   * 
-   * @param parentElement
-   *          the expanded element in the tree, for which the framework requests
-   *          the children
-   */
   @Override
   public Object[] getChildren(Object parentElement) {
     FolderTree newItem = new FolderTree(parentElement);
@@ -21,17 +12,6 @@ public class ViewContentProvider implements ITreeContentProvider {
     return listOfAllChildren;
   }
 
-  /**
-   * This method is called when the user expands a tree node in the View. The
-   * framework asks is the given element has any children. The parameter of the
-   * method is a tree item, and the method is expected to return
-   * <code>true></code> if the item has children, or <code>false</code> if it
-   * has no children.
-   * 
-   * @param element
-   *          a tree item, for which the framework wants to know if it has
-   *          children
-   */
   @Override
   public boolean hasChildren(Object element) {
     FolderTree elements = new FolderTree(element);

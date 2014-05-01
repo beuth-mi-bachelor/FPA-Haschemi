@@ -1,10 +1,13 @@
 package de.bht.fpa.mail.s798419.fsnavigation;
 
 import java.io.File;
+import java.io.FileFilter;
 
 import org.eclipse.swt.graphics.Image;
 
 public class FolderItem {
+
+  private static final String ACCEPTED_FILE_EXTENSION = ".xml";
 
   private File item;
 
@@ -12,6 +15,20 @@ public class FolderItem {
       "img/icon_folder.png").createImage();
   private static final Image ICON_FILE = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "img/icon_file.png")
       .createImage();
+
+  private static final FileFilter XML_AND_DIRECTORIES_FILTER = new FileFilter() {
+    @Override
+    public boolean accept(File item) {
+      return item.isDirectory() || item.getName().endsWith(ACCEPTED_FILE_EXTENSION);
+    }
+  };
+
+  public static final FileFilter XML_ONLY_FILTER = new FileFilter() {
+    @Override
+    public boolean accept(File item) {
+      return !item.isDirectory() || item.getName().endsWith(ACCEPTED_FILE_EXTENSION);
+    }
+  };
 
   public FolderItem(String item) {
     this.item = new File(item);
@@ -45,14 +62,15 @@ public class FolderItem {
   }
 
   public File[] listSubElements() {
-    return this.item.listFiles();
+
+    return this.item.listFiles(XML_AND_DIRECTORIES_FILTER);
   }
 
   @Override
   public String toString() {
     return this.item.getAbsolutePath();
   }
-  
+
   public String displayName() {
     return this.item.getName();
   }
