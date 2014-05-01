@@ -11,12 +11,13 @@ import de.bht.fpa.mail.s798419.fsnavigation.dialogs.HistoryListDialog;
 public class HistoryViewer extends AbstractHandler {
 
   public HistoryViewer() {
-    
+
   }
 
+  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-    HistoryListDialog listDialog = new HistoryListDialog(window.getShell());
+    HistoryListDialog listDialog = new HistoryListDialog(window.getShell(), window.getActivePage());
     listDialog.open();
     return null;
   }

@@ -27,6 +27,7 @@ public class SetBaseDir extends AbstractHandler {
       IWorkbenchPage page = window.getActivePage();
       NavigationView view = (NavigationView) page.findView(NavigationView.ID);
       view.changeModel(new FolderTree(newBaseDir));
+      view.addToHistory(newBaseDir);
     }
 
     return newBaseDir;

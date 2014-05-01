@@ -39,13 +39,13 @@
             commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.setBaseDirectory"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+5">
+            sequence="M1+1">
       </key>
       <key
             commandId="de.bht.fpa.mail.s798419.fsnavigation.commands.historyViewer"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+6">
+            sequence="M1+2">
       </key>
    </extension>
    <extension
