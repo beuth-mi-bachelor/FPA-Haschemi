@@ -91,6 +91,9 @@ public class NavigationView extends ViewPart {
   }
 
   private void restoreState() {
+    if (this.memento == null) {
+      return;
+    }
     IMemento selectionsMomento = this.memento.getChild(NavigationView.GUI_STATE);
     if (selectionsMomento != null) {
       this.history = selectionsMomento.getString(NavigationView.ALL_PATHS);
