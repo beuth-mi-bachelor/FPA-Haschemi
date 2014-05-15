@@ -16,7 +16,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public class NavigationView extends ViewPart {
@@ -61,15 +60,13 @@ public class NavigationView extends ViewPart {
               File selectedFile = (File) item;
               if (selectedFile.isDirectory()) {
                 File[] allXmlFiles = selectedFile.listFiles(FolderItem.XML_ONLY_FILTER);
-                System.out.println("selected directory: " + selectedFile.getAbsolutePath());
+                System.out.println("selected: " + selectedFile.getAbsolutePath());
                 System.out.println("number of mails: : " + allXmlFiles.length);
                 for (File file : allXmlFiles) {
-                  Message message = JAXB.unmarshal(file, Message.class);
-                  System.out.println(message);
+                  showMail(file);
                 }
               } else {
-                Message message = JAXB.unmarshal(selectedFile, Message.class);
-                System.out.println(message);
+                showMail(selectedFile);
               }
             }
           }
@@ -78,6 +75,17 @@ public class NavigationView extends ViewPart {
       }
     });
     this.restoreState();
+  }
+
+  private void showMail(File file) {
+    try {
+      Message message = JAXB.unmarshal(file, Message.class);
+      if (message.getId() != null) {
+        System.out.println(message);
+      }
+    } catch (RuntimeException msg) {
+      System.out.println("not a valid format");
+    }
   }
 
   public String[] getHistory() {
