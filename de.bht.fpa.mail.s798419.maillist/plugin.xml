@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.bht.fpa.mail.s798419.maillist.MailListView"
+            id="de.bht.fpa.mail.s798419.maillist.MailListView"
+            name="name"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="de.bht.fpa.mail.s798419.main.perspective">
+         <view
+               id="de.bht.fpa.mail.s798419.maillist.MailListView"
+               minimized="false"
+               relationship="stack"
+               relative="de.bht.fpa.mail.s798419.main.perspective.right">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>
