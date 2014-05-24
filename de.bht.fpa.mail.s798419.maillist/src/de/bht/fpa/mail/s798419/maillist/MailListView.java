@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -30,6 +34,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.custom.CLabel;
 
 public class MailListView extends ViewPart {
+  private static final int HEIGHT_OF_TOOLBAR = 25;
+
   public MailListView() {
   }
 
@@ -46,28 +52,52 @@ public class MailListView extends ViewPart {
   private static final Image ICON_LOW = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "img/icon_low.png")
       .createImage();
 
+  public static final char NULL_CHAR = 0x0;
+
   private static final int ICON_CONTAINING_CELL_WIDTH = 24;
 
   private static final int NUMBER_OF_MESSAGES = 50;
   private TableViewer tableViewer;
-  private Text text_1;
+  private Text textInput;
 
   @Override
   public void createPartControl(Composite parent) {
 
-    parent.setLayout(new GridLayout(1, true));
+    parent.setLayout(new GridLayout(1, false));
 
-    CLabel lblSearch = new CLabel(parent, SWT.LEFT);
+    Composite topLayer = new Composite(parent, SWT.NONE);
+    Composite bottomLayer = new Composite(parent, SWT.NONE);
+
+    topLayer.setLayout(new GridLayout(2, false));
+
+    GridDataFactory.fillDefaults().grab(true, false).span(SWT.FILL, SWT.DEFAULT).hint(SWT.DEFAULT, HEIGHT_OF_TOOLBAR)
+        .applyTo(topLayer);
+    GridDataFactory.fillDefaults().grab(true, true).span(SWT.FILL, SWT.DEFAULT).hint(SWT.DEFAULT, SWT.DEFAULT)
+        .applyTo(bottomLayer);
+
+    TableViewerBuilder t = new TableViewerBuilder(bottomLayer);
+
+    CLabel lblSearch = new CLabel(topLayer, SWT.LEFT);
     lblSearch.setText("Search");
+    lblSearch.setMargins(0, 0, 0, 0);
 
-    text_1 = new Text(parent, SWT.FILL);
+    textInput = new Text(topLayer, SWT.FILL);
+    textInput.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+    textInput.addKeyListener(new KeyListener() {
 
-    Composite composite = new Composite(parent, SWT.NONE);
-    composite.setLayout(new TableColumnLayout());
+      @Override
+      public void keyPressed(KeyEvent e) {
 
-    TableViewerBuilder t = new TableViewerBuilder(composite, SWT.BORDER | SWT.FULL_SELECTION);
-    composite.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
-    t.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+        if (e.character != MailListView.NULL_CHAR) {
+          search(e.character);
+        }
+      }
+
+    });
 
     ColumnBuilder importance = t.createColumn("Importance");
     importance.format(new ICellFormatter() {
@@ -104,6 +134,21 @@ public class MailListView extends ViewPart {
       }
     });
     received.build();
+
+    ColumnBuilder sent = t.createColumn("Sent");
+    sent.sortBy(MessageValues.SENT);
+    sent.useAsDefaultSortColumn();
+    sent.bindToValue(MessageValues.SENT);
+    sent.format(new ICellFormatter() {
+      @Override
+      public void formatCell(ViewerCell cell, Object value) {
+        Date nonFormattedDate = (Date) value;
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = formatter.format(nonFormattedDate);
+        cell.setText(formattedDate);
+      }
+    });
+    sent.build();
 
     ColumnBuilder read = t.createColumn("Read");
     read.format(new ICellFormatter() {
@@ -159,6 +204,59 @@ public class MailListView extends ViewPart {
 
   private Collection<Message> createDummyMessages() {
     return new RandomTestDataProvider(NUMBER_OF_MESSAGES).getMessages();
+  }
+
+  private void search(char character) {
+
+    final String searchString = this.textInput.getText().toLowerCase();
+
+    this.tableViewer.resetFilters();
+
+    if (searchString.length() > 0) {
+      this.tableViewer.addFilter(new ViewerFilter() {
+
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+          Message message = (Message) element;
+          if (message.getSubject().toLowerCase().contains(searchString)) {
+            return true;
+          }
+          if (message.getText().toLowerCase().contains(searchString)) {
+            return true;
+          }
+          if (message.getSender().getEmail().toLowerCase().contains(searchString)) {
+            return true;
+          }
+          if (message.getSender().getPersonal().toLowerCase().contains(searchString)) {
+            return true;
+          }
+          for (Recipient msg : message.getRecipients()) {
+            if (msg.getEmail().toLowerCase().contains(searchString)) {
+              return true;
+            }
+            if (msg.getPersonal().toLowerCase().contains(searchString)) {
+              return true;
+            }
+          }
+          final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+          Date sent = message.getSent();
+          Date received = message.getReceived();
+
+          String formattedReceivedDate = formatter.format(received);
+          String formattedSentDate = formatter.format(sent);
+
+          if (formattedReceivedDate.contains(searchString) || formattedSentDate.contains(searchString)) {
+            return true;
+          }
+
+          return false;
+        }
+
+      });
+    }
+
+    tableViewer.refresh();
+
   }
 
   @Override
