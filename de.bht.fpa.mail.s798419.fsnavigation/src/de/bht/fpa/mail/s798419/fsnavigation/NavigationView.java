@@ -1,7 +1,9 @@
 package de.bht.fpa.mail.s798419.fsnavigation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXB;
@@ -46,6 +48,7 @@ public class NavigationView extends ViewPart {
     viewer.setContentProvider(new ViewContentProvider());
     viewer.setLabelProvider(new ViewLabelProvider());
     viewer.setInput(createModel());
+    this.getSite().setSelectionProvider(viewer);
     viewer.addSelectionChangedListener(new ISelectionChangedListener() {
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
@@ -62,11 +65,13 @@ public class NavigationView extends ViewPart {
                 File[] allXmlFiles = selectedFile.listFiles(FolderItem.XML_ONLY_FILTER);
                 System.out.println("selected: " + selectedFile.getAbsolutePath());
                 System.out.println("number of mails: : " + allXmlFiles.length);
+                Collection<Message> messagesInFolder = new ArrayList<Message>();
                 for (File file : allXmlFiles) {
-                  showMail(file);
+                  Message msg = getMail(file);
+                  if (msg != null) {
+                    messagesInFolder.add(msg);
+                  }
                 }
-              } else {
-                showMail(selectedFile);
               }
             }
           }
@@ -77,15 +82,16 @@ public class NavigationView extends ViewPart {
     this.restoreState();
   }
 
-  private void showMail(File file) {
+  private Message getMail(File file) {
     try {
       Message message = JAXB.unmarshal(file, Message.class);
       if (message.getId() != null) {
-        System.out.println(message);
+        return message;
       }
     } catch (RuntimeException msg) {
       System.out.println("not a valid format");
     }
+    return null;
   }
 
   public String[] getHistory() {

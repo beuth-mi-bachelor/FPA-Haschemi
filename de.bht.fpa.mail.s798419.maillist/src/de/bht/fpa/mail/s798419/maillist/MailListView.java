@@ -1,12 +1,18 @@
 package de.bht.fpa.mail.s798419.maillist;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.xml.bind.JAXB;
+
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -17,13 +23,14 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import de.bht.fpa.mail.s000000.common.mail.model.Importance;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 import de.bht.fpa.mail.s000000.common.mail.model.Sender;
-import de.bht.fpa.mail.s000000.common.mail.testdata.RandomTestDataProvider;
 import de.bht.fpa.mail.s000000.common.table.MessageValues;
 import de.ralfebert.rcputils.tables.ColumnBuilder;
 import de.ralfebert.rcputils.tables.ICellFormatter;
@@ -41,6 +48,8 @@ public class MailListView extends ViewPart {
 
   public static final String ID = "de.bht.fpa.mail.s798419.maillist.MailListView";
 
+  private static final String ACCEPTED_FILE_EXTENSION = ".xml";
+
   private static final Image ICON_READ = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "img/icon_read.png")
       .createImage();
   private static final Image ICON_UNREAD = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
@@ -56,9 +65,15 @@ public class MailListView extends ViewPart {
 
   private static final int ICON_CONTAINING_CELL_WIDTH = 24;
 
-  private static final int NUMBER_OF_MESSAGES = 50;
   private TableViewer tableViewer;
   private Text textInput;
+
+  public static final FileFilter XML_ONLY_FILTER = new FileFilter() {
+    @Override
+    public boolean accept(File item) {
+      return !item.isDirectory() || item.getName().endsWith(ACCEPTED_FILE_EXTENSION);
+    }
+  };
 
   @Override
   public void createPartControl(Composite parent) {
@@ -199,11 +214,55 @@ public class MailListView extends ViewPart {
     subject.bindToValue(MessageValues.SUBJECT).build();
 
     this.tableViewer = t.getTableViewer();
-    t.setInput(createDummyMessages());
+
+    this.getSite().getPage().addSelectionListener(listener);
   }
 
-  private Collection<Message> createDummyMessages() {
-    return new RandomTestDataProvider(NUMBER_OF_MESSAGES).getMessages();
+  private final ISelectionListener listener = new ISelectionListener() {
+    @Override
+    public void selectionChanged(IWorkbenchPart part, ISelection sel) {
+      if (!(sel instanceof IStructuredSelection)) {
+        return;
+      }
+      IStructuredSelection ss = (IStructuredSelection) sel;
+      Object item = ss.getFirstElement();
+      if (item instanceof File) {
+        File selectedFile = (File) item;
+
+        if (selectedFile.isDirectory()) {
+          File[] allXmlFiles = selectedFile.listFiles();
+          Collection<Message> messagesInFolder = new ArrayList<Message>();
+          for (File file : allXmlFiles) {
+            Message msg = getMail(file);
+            if (msg != null) {
+              messagesInFolder.add(msg);
+            }
+          }
+          addToView(messagesInFolder);
+        }
+      }
+    }
+  };
+
+  private Message getMail(File file) {
+    try {
+      Message message = JAXB.unmarshal(file, Message.class);
+      if (message.getId() != null) {
+        return message;
+      }
+    } catch (RuntimeException msg) {
+      System.out.println("not a valid format");
+    }
+    return null;
+  }
+
+  private void addToView(Collection<Message> messages) {
+    this.tableViewer.setInput(messages);
+  }
+
+  @Override
+  public void dispose() {
+    getSite().getPage().removeSelectionListener(listener);
   }
 
   private void search(char character) {
