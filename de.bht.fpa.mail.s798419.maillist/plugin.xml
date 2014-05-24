@@ -6,7 +6,7 @@
       <view
             class="de.bht.fpa.mail.s798419.maillist.MailListView"
             id="de.bht.fpa.mail.s798419.maillist.MailListView"
-            name="name"
+            name="email list"
             restorable="true">
       </view>
    </extension>

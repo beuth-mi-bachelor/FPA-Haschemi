@@ -6,7 +6,7 @@
       <view
             class="de.bht.fpa.mail.s798419.fsnavigation.NavigationView"
             id="de.bht.fpa.mail.s798419.fsnavigation.NavigationView"
-            name="name"
+            name="navigation"
             restorable="true">
       </view>
    </extension>

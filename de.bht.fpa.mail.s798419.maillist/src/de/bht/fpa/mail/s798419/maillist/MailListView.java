@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 
 import javax.xml.bind.JAXB;
 
@@ -66,6 +66,7 @@ public class MailListView extends ViewPart {
   private static final int ICON_CONTAINING_CELL_WIDTH = 24;
 
   private TableViewer tableViewer;
+  private TableViewerBuilder tableViewerBuilder;
   private Text textInput;
 
   public static final FileFilter XML_ONLY_FILTER = new FileFilter() {
@@ -90,7 +91,7 @@ public class MailListView extends ViewPart {
     GridDataFactory.fillDefaults().grab(true, true).span(SWT.FILL, SWT.DEFAULT).hint(SWT.DEFAULT, SWT.DEFAULT)
         .applyTo(bottomLayer);
 
-    TableViewerBuilder t = new TableViewerBuilder(bottomLayer);
+    this.tableViewerBuilder = new TableViewerBuilder(bottomLayer);
 
     CLabel lblSearch = new CLabel(topLayer, SWT.LEFT);
     lblSearch.setText("Search");
@@ -114,7 +115,7 @@ public class MailListView extends ViewPart {
 
     });
 
-    ColumnBuilder importance = t.createColumn("Importance");
+    ColumnBuilder importance = this.tableViewerBuilder.createColumn("Importance");
     importance.format(new ICellFormatter() {
       @Override
       public void formatCell(ViewerCell cell, Object value) {
@@ -135,7 +136,7 @@ public class MailListView extends ViewPart {
     importance.alignCenter();
     importance.bindToValue(MessageValues.IMPORTANCE).build();
 
-    ColumnBuilder received = t.createColumn("Received");
+    ColumnBuilder received = this.tableViewerBuilder.createColumn("Received");
     received.sortBy(MessageValues.RECEIVED);
     received.useAsDefaultSortColumn();
     received.bindToValue(MessageValues.RECEIVED);
@@ -150,7 +151,7 @@ public class MailListView extends ViewPart {
     });
     received.build();
 
-    ColumnBuilder sent = t.createColumn("Sent");
+    ColumnBuilder sent = this.tableViewerBuilder.createColumn("Sent");
     sent.sortBy(MessageValues.SENT);
     sent.useAsDefaultSortColumn();
     sent.bindToValue(MessageValues.SENT);
@@ -165,7 +166,7 @@ public class MailListView extends ViewPart {
     });
     sent.build();
 
-    ColumnBuilder read = t.createColumn("Read");
+    ColumnBuilder read = this.tableViewerBuilder.createColumn("Read");
     read.format(new ICellFormatter() {
       @Override
       public void formatCell(ViewerCell cell, Object value) {
@@ -184,7 +185,7 @@ public class MailListView extends ViewPart {
     read.alignCenter();
     read.bindToValue(MessageValues.READ).build();
 
-    ColumnBuilder sender = t.createColumn("Sender");
+    ColumnBuilder sender = this.tableViewerBuilder.createColumn("Sender");
     sender.format(new ICellFormatter() {
       @Override
       public void formatCell(ViewerCell cell, Object value) {
@@ -194,12 +195,12 @@ public class MailListView extends ViewPart {
     });
     sender.bindToValue(MessageValues.SENDER).build();
 
-    ColumnBuilder recipients = t.createColumn("Recipients");
+    ColumnBuilder recipients = this.tableViewerBuilder.createColumn("Recipients");
     recipients.format(new ICellFormatter() {
       @Override
       public void formatCell(ViewerCell cell, Object value) {
         @SuppressWarnings("unchecked")
-        ArrayList<Recipient> recipients = (ArrayList<Recipient>) value;
+        Collection<Recipient> recipients = (LinkedList<Recipient>) value;
         String recipientList = "";
         for (Recipient recipient : recipients) {
           recipientList += recipient.getPersonal() + " <" + recipient.getEmail() + ">";
@@ -210,10 +211,10 @@ public class MailListView extends ViewPart {
     });
     recipients.bindToValue(MessageValues.RECIPIENT).build();
 
-    ColumnBuilder subject = t.createColumn("Subject");
+    ColumnBuilder subject = this.tableViewerBuilder.createColumn("Subject");
     subject.bindToValue(MessageValues.SUBJECT).build();
 
-    this.tableViewer = t.getTableViewer();
+    this.tableViewer = this.tableViewerBuilder.getTableViewer();
 
     this.getSite().getPage().addSelectionListener(listener);
   }
@@ -231,7 +232,7 @@ public class MailListView extends ViewPart {
 
         if (selectedFile.isDirectory()) {
           File[] allXmlFiles = selectedFile.listFiles();
-          Collection<Message> messagesInFolder = new ArrayList<Message>();
+          Collection<Message> messagesInFolder = new LinkedList<Message>();
           for (File file : allXmlFiles) {
             Message msg = getMail(file);
             if (msg != null) {
@@ -251,13 +252,13 @@ public class MailListView extends ViewPart {
         return message;
       }
     } catch (RuntimeException msg) {
-      System.out.println("not a valid format");
+      return null;
     }
     return null;
   }
 
   private void addToView(Collection<Message> messages) {
-    this.tableViewer.setInput(messages);
+    this.tableViewerBuilder.setInput(messages);
   }
 
   @Override

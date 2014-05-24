@@ -1,16 +1,6 @@
 package de.bht.fpa.mail.s798419.fsnavigation;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.xml.bind.JAXB;
-
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -18,7 +8,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-import de.bht.fpa.mail.s000000.common.mail.model.Message;
 
 public class NavigationView extends ViewPart {
 
@@ -49,49 +38,7 @@ public class NavigationView extends ViewPart {
     viewer.setLabelProvider(new ViewLabelProvider());
     viewer.setInput(createModel());
     this.getSite().setSelectionProvider(viewer);
-    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-      @Override
-      public void selectionChanged(SelectionChangedEvent event) {
-        if (event.getSelection().isEmpty()) {
-          return;
-        }
-        if (event.getSelection() instanceof IStructuredSelection) {
-          IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-          for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
-            Object item = iterator.next();
-            if (item instanceof File) {
-              File selectedFile = (File) item;
-              if (selectedFile.isDirectory()) {
-                File[] allXmlFiles = selectedFile.listFiles(FolderItem.XML_ONLY_FILTER);
-                System.out.println("selected: " + selectedFile.getAbsolutePath());
-                System.out.println("number of mails: : " + allXmlFiles.length);
-                Collection<Message> messagesInFolder = new ArrayList<Message>();
-                for (File file : allXmlFiles) {
-                  Message msg = getMail(file);
-                  if (msg != null) {
-                    messagesInFolder.add(msg);
-                  }
-                }
-              }
-            }
-          }
-
-        }
-      }
-    });
     this.restoreState();
-  }
-
-  private Message getMail(File file) {
-    try {
-      Message message = JAXB.unmarshal(file, Message.class);
-      if (message.getId() != null) {
-        return message;
-      }
-    } catch (RuntimeException msg) {
-      System.out.println("not a valid format");
-    }
-    return null;
   }
 
   public String[] getHistory() {

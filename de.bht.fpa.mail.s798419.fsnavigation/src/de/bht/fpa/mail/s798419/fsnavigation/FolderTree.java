@@ -5,10 +5,14 @@ import java.io.File;
 
 public class FolderTree {
 
-  public static final String HOME_DIRECTORY = System.getProperty("user.home");
+  public static final String HOME_DIRECTORY = System.getProperty("user.home") + "/maildata";
+
   private FolderItem item;
 
   public FolderTree() {
+    if (!new File(FolderTree.HOME_DIRECTORY).exists()) {
+      new File(FolderTree.HOME_DIRECTORY).mkdirs();
+    }
     this.item = new FolderItem(FolderTree.HOME_DIRECTORY);
   }
 
@@ -38,7 +42,7 @@ public class FolderTree {
   public String toString() {
     return this.item.toString();
   }
-  
+
   public String displayName() {
     return this.item.displayName();
   }
