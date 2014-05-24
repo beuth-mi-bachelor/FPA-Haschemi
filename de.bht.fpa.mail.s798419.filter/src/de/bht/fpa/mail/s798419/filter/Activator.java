@@ -1,4 +1,4 @@
-package de.bht.fpa.mail.s798419.statusbar;
+package de.bht.fpa.mail.s798419.filter;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -8,7 +8,7 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
-  public static final String PLUGIN_ID = "de.bht.fpa.mail.s798419.statusbar"; //$NON-NLS-1$
+  public static final String PLUGIN_ID = "de.bht.fpa.mail.s798419.filter"; //$NON-NLS-1$
 
   // The shared instance
   private static Activator plugin;
