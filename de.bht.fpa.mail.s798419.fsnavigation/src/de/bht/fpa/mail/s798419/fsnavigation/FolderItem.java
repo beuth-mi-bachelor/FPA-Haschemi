@@ -16,10 +16,10 @@ public class FolderItem {
   private static final Image ICON_FILE = Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "img/icon_file.png")
       .createImage();
 
-  private static final FileFilter XML_AND_DIRECTORIES_FILTER = new FileFilter() {
+  private static final FileFilter DIRECTORIES_ONLY_FILTER = new FileFilter() {
     @Override
     public boolean accept(File item) {
-      return item.isDirectory() || item.getName().endsWith(ACCEPTED_FILE_EXTENSION);
+      return item.isDirectory();
     }
   };
 
@@ -52,7 +52,7 @@ public class FolderItem {
     if (this.item.isFile()) {
       return false;
     } else {
-      File[] subItems = this.item.listFiles();
+      File[] subItems = this.item.listFiles(DIRECTORIES_ONLY_FILTER);
       if (subItems != null) {
         return subItems.length != 0;
       } else {
@@ -63,7 +63,7 @@ public class FolderItem {
 
   public File[] listSubElements() {
 
-    return this.item.listFiles(XML_AND_DIRECTORIES_FILTER);
+    return this.item.listFiles(DIRECTORIES_ONLY_FILTER);
   }
 
   @Override

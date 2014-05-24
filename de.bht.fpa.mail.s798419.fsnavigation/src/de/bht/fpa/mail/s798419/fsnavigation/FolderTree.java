@@ -5,7 +5,7 @@ import java.io.File;
 
 public class FolderTree {
 
-  public static final String HOME_DIRECTORY = System.getProperty("user.home") + "/maildata";
+  public static final String HOME_DIRECTORY = System.getProperty("user.home");
 
   private FolderItem item;
 

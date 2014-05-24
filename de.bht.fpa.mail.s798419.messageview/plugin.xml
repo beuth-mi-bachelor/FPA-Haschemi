@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="de.bht.fpa.mail.s798419.main.perspective">
+         <view
+               id="de.bht.fpa.mail.s000000.common.mail.messagedetails.MessageView"
+               minimized="false"
+               relationship="stack"
+               relative="de.bht.fpa.mail.s798419.main.perspective.bottom">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

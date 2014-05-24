@@ -217,6 +217,7 @@ public class MailListView extends ViewPart {
     this.tableViewer = this.tableViewerBuilder.getTableViewer();
 
     this.getSite().getPage().addSelectionListener(listener);
+    this.getSite().setSelectionProvider(this.tableViewer);
   }
 
   private final ISelectionListener listener = new ISelectionListener() {
