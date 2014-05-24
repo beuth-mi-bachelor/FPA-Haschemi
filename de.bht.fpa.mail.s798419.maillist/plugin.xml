@@ -18,7 +18,7 @@
                id="de.bht.fpa.mail.s798419.maillist.MailListView"
                minimized="false"
                relationship="stack"
-               relative="de.bht.fpa.mail.s798419.main.perspective.right">
+               relative="de.bht.fpa.mail.s798419.main.perspective.top">
          </view>
       </perspectiveExtension>
    </extension>

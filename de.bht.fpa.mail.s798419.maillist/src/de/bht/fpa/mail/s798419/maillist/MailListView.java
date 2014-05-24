@@ -231,7 +231,7 @@ public class MailListView extends ViewPart {
         File selectedFile = (File) item;
 
         if (selectedFile.isDirectory()) {
-          File[] allXmlFiles = selectedFile.listFiles();
+          File[] allXmlFiles = selectedFile.listFiles(XML_ONLY_FILTER);
           Collection<Message> messagesInFolder = new LinkedList<Message>();
           for (File file : allXmlFiles) {
             Message msg = getMail(file);
