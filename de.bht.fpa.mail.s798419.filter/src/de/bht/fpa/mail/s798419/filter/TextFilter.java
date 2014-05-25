@@ -23,6 +23,7 @@ public class TextFilter extends Filter {
 
     if (messagesToFilter != null) {
       for (Message message : messagesToFilter) {
+
         if (StringCompareHelper.matches(message.getText().toLowerCase(), this.input, this.type)) {
           filteredMessages.add(message);
         }
@@ -30,4 +31,13 @@ public class TextFilter extends Filter {
     }
     return filteredMessages;
   }
+
+  public String getInput() {
+    return this.input;
+  }
+
+  public FilterOperator getType() {
+    return this.type;
+  }
+
 }

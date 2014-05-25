@@ -30,4 +30,13 @@ public class SubjectFilter extends Filter {
     }
     return messages;
   }
+
+  public String getInput() {
+    return this.input;
+  }
+
+  public FilterOperator getType() {
+    return this.type;
+  }
+
 }

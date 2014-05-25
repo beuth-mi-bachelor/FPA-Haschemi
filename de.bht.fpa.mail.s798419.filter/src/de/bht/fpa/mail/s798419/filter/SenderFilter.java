@@ -33,4 +33,16 @@ public class SenderFilter extends Filter {
     }
     return filteredMessages;
   }
+
+  @Override
+  public String getInput() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public FilterOperator getType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }
