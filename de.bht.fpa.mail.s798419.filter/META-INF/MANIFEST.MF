@@ -5,8 +5,10 @@ Bundle-SymbolicName: de.bht.fpa.mail.s798419.filter
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.bht.fpa.mail.s798419.filter.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.bht.fpa.mail.s000000.common.filter,
- de.bht.fpa.mail.s000000.common.mail.model
+ de.bht.fpa.mail.s000000.common.mail.model,
+ de.bht.fpa.mail.s000000.common.mail.testdata
