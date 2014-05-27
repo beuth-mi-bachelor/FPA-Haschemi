@@ -7,7 +7,7 @@ import java.util.List;
 import de.bht.fpa.mail.s000000.common.filter.FilterOperator;
 import de.bht.fpa.mail.s798419.filter.Filter;
 import de.bht.fpa.mail.s798419.filter.ReadFilter;
-import de.bht.fpa.mail.s798419.filter.RecipientsFilter;
+import de.bht.fpa.mail.s798419.filter.RecipientFilter;
 import de.bht.fpa.mail.s798419.filter.SenderFilter;
 import de.bht.fpa.mail.s798419.filter.UnionFilter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
@@ -26,7 +26,7 @@ public class FilterTestCase {
     System.out.println("*** Union-Filter ***");
     Filter sender = new SenderFilter("stulle_heidi@hotmai", FilterOperator.CONTAINS);
     System.out.println("sender: " + sender.filter(data).size());
-    Filter recipient = new RecipientsFilter("stulle_lola@hotmail.de", FilterOperator.IS);
+    Filter recipient = new RecipientFilter("stulle_lola@hotmail.de", FilterOperator.IS);
     System.out.println("recipient: " + recipient.filter(data).size());
     Collection<Filter> filterList = new ArrayList<Filter>();
     filterList.add(sender);

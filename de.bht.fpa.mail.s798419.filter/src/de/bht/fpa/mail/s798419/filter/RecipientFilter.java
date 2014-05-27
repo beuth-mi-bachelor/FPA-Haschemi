@@ -8,12 +8,12 @@ import de.bht.fpa.mail.s000000.common.filter.StringCompareHelper;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
 
-public class RecipientsFilter extends Filter {
+public class RecipientFilter extends Filter {
 
   private final String input;
   private final FilterOperator type;
 
-  public RecipientsFilter(String filteredString, FilterOperator filterOperator) {
+  public RecipientFilter(String filteredString, FilterOperator filterOperator) {
     this.input = filteredString.toLowerCase();
     this.type = filterOperator;
   }
