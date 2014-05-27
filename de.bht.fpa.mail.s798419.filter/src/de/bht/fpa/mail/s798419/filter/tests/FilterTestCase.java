@@ -13,9 +13,13 @@ import de.bht.fpa.mail.s798419.filter.UnionFilter;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.testdata.RandomTestDataProvider;
 
-public class FilterTestCase {
+public final class FilterTestCase {
 
   public static final int NUMBER_OF_MESSAGES = 50;
+
+  private FilterTestCase() {
+
+  }
 
   public static void main(String[] args) {
     System.out.println("*** Read-Filter ***");

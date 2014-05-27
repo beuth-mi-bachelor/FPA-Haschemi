@@ -12,3 +12,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.bht.fpa.mail.s000000.common.filter,
  de.bht.fpa.mail.s000000.common.mail.model,
  de.bht.fpa.mail.s000000.common.mail.testdata
+Export-Package: de.bht.fpa.mail.s798419.filter,
+ de.bht.fpa.mail.s798419.filter.parser,
+ de.bht.fpa.mail.s798419.filter.tests
