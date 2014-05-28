@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IExecutionListener;
 import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.ui.PlatformUI;
 
 import de.bht.fpa.mail.s000000.common.filter.FilterCombination;
 import de.bht.fpa.mail.s000000.common.filter.FilterDialog;
@@ -21,6 +22,7 @@ import de.bht.fpa.mail.s798419.filter.SenderFilter;
 import de.bht.fpa.mail.s798419.filter.SubjectFilter;
 import de.bht.fpa.mail.s798419.filter.TextFilter;
 import de.bht.fpa.mail.s798419.filter.UnionFilter;
+import de.bht.fpa.mail.s798419.maillist.MailListView;
 
 public class FilterDialogExecutionListener implements IExecutionListener {
 
@@ -46,8 +48,6 @@ public class FilterDialogExecutionListener implements IExecutionListener {
             Collection<Filter> filterList = new ArrayList<Filter>();
             for (FilterCombination filterCombination : filterCombo) {
               Filter currentFilter = null;
-              System.out.println(filterCombination.getFilterValue() + " : " + filterCombination.getFilterOperator()
-                  + " : " + filterCombination.getFilterType());
               if (filterCombination.getFilterType().equals(FilterType.SENDER)) {
                 currentFilter = new SenderFilter((String) filterCombination.getFilterValue(),
                     filterCombination.getFilterOperator());
@@ -61,16 +61,14 @@ public class FilterDialogExecutionListener implements IExecutionListener {
                 currentFilter = new SubjectFilter((String) filterCombination.getFilterValue(),
                     filterCombination.getFilterOperator());
               } else if (filterCombination.getFilterType().equals(FilterType.IMPORTANCE)) {
-                System.out.println(filterCombination.getFilterValue().getClass());
                 currentFilter = new ImportanceFilter((Importance) filterCombination.getFilterValue());
               } else if (filterCombination.getFilterType().equals(FilterType.READ)) {
-                System.out.println(filterCombination.getFilterValue().getClass());
                 currentFilter = new ReadFilter((Boolean) filterCombination.getFilterValue());
               }
               filterList.add(currentFilter);
             }
 
-            if (filterList.size() > 1) {
+            if (filterList.size() > 0) {
               Filter filterGroup = null;
               if (filterTypes.equals(FilterGroupType.UNION)) {
                 filterGroup = new UnionFilter(filterList);
@@ -78,10 +76,11 @@ public class FilterDialogExecutionListener implements IExecutionListener {
                 filterGroup = new IntersectionFilter(filterList);
               }
               if (filterGroup != null) {
-                System.out.println(filterGroup.getInput());
+                MailListView view = (MailListView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .findView(MailListView.ID);
+                view.filter(filterGroup);
               }
             }
-
           }
         }
       }

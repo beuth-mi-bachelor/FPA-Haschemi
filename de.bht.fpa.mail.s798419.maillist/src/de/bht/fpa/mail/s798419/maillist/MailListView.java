@@ -39,6 +39,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.custom.CLabel;
+import de.bht.fpa.mail.s798419.filter.Filter;
 
 public class MailListView extends ViewPart {
   private static final int HEIGHT_OF_TOOLBAR = 25;
@@ -63,6 +64,8 @@ public class MailListView extends ViewPart {
 
   public static final char NULL_CHAR = 0x0;
 
+  private Collection<Message> restoreView = null;
+
   private static final int ICON_CONTAINING_CELL_WIDTH = 24;
 
   private TableViewer tableViewer;
@@ -75,6 +78,10 @@ public class MailListView extends ViewPart {
       return !item.isDirectory() || item.getName().endsWith(ACCEPTED_FILE_EXTENSION);
     }
   };
+
+  public TableViewerBuilder getTableViewer() {
+    return this.tableViewerBuilder;
+  }
 
   @Override
   public void createPartControl(Composite parent) {
@@ -246,6 +253,21 @@ public class MailListView extends ViewPart {
     }
   };
 
+  @SuppressWarnings("unchecked")
+  private Collection<Message> getInputOfTableViewer() {
+    Collection<Message> msg = (Collection<Message>) this.tableViewer.getInput();
+    return msg;
+  }
+
+  public void filter(Filter filter) {
+    Collection<Message> messages = this.getInputOfTableViewer();
+    if (messages != null) {
+      this.tableViewer.setInput(filter.filter(messages));
+      this.tableViewer.refresh();
+    }
+
+  }
+
   private Message getMail(File file) {
     try {
       Message message = JAXB.unmarshal(file, Message.class);
@@ -259,7 +281,12 @@ public class MailListView extends ViewPart {
   }
 
   private void addToView(Collection<Message> messages) {
+    this.restoreView = messages;
     this.tableViewerBuilder.setInput(messages);
+  }
+
+  public void restoreView() {
+    this.tableViewerBuilder.setInput(this.restoreView);
   }
 
   @Override

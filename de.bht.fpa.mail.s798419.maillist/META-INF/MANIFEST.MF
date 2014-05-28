@@ -8,12 +8,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.bht.fpa.mail.s000000.common.mail.messagedetails,
+Import-Package: de.bht.fpa.mail.s000000.common.filter,
+ de.bht.fpa.mail.s000000.common.mail.messagedetails,
  de.bht.fpa.mail.s000000.common.mail.model,
  de.bht.fpa.mail.s000000.common.mail.testdata,
  de.bht.fpa.mail.s000000.common.table,
+ de.bht.fpa.mail.s798419.filter,
  de.ralfebert.rcputils.tables,
  de.ralfebert.rcputils.tables.format
+Export-Package: de.bht.fpa.mail.s798419.maillist
 Bundle-ClassPath: .,
  swing2swt.jar,
  swt-grouplayout.jar
