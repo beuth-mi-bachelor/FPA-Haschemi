@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
+import de.bht.fpa.mail.s000000.common.mail.model.Folder;
 import de.bht.fpa.mail.s000000.common.mail.model.Importance;
 import de.bht.fpa.mail.s000000.common.mail.model.Message;
 import de.bht.fpa.mail.s000000.common.mail.model.Recipient;
@@ -204,10 +206,15 @@ public class MailListView extends ViewPart {
 
     ColumnBuilder recipients = this.tableViewerBuilder.createColumn("Recipients");
     recipients.format(new ICellFormatter() {
+      @SuppressWarnings("unchecked")
       @Override
       public void formatCell(ViewerCell cell, Object value) {
-        @SuppressWarnings("unchecked")
-        Collection<Recipient> recipients = (LinkedList<Recipient>) value;
+        Collection<Recipient> recipients;
+        if (value instanceof ArrayList) {
+          recipients = (ArrayList<Recipient>) value;
+        } else {
+          recipients = (LinkedList<Recipient>) value;
+        }
         String recipientList = "";
         for (Recipient recipient : recipients) {
           recipientList += recipient.getPersonal() + " <" + recipient.getEmail() + ">";
@@ -249,6 +256,11 @@ public class MailListView extends ViewPart {
           }
           addToView(messagesInFolder);
         }
+      }
+      if (item instanceof Folder) {
+        Folder selectedFolder = (Folder) item;
+        Collection<Message> messagesInFolder = selectedFolder.getMessages();
+        addToView(messagesInFolder);
       }
     }
   };

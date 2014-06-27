@@ -10,6 +10,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+
+import de.bht.fpa.mail.s000000.common.mail.model.Account;
+import de.bht.fpa.mail.s000000.common.mail.model.Folder;
 import de.bht.fpa.mail.s000000.common.rcp.statusbar.StatusBarHelper;
 
 public class StatusbarView implements IStartup {
@@ -42,6 +45,14 @@ public class StatusbarView implements IStartup {
       if (item instanceof File) {
         File folder = (File) item;
         StatusBarHelper.getStatusLineManager().setMessage("folder '" + folder + "' was selected");
+      } else if (item instanceof Folder) {
+        Folder folder = (Folder) item;
+        StatusBarHelper.getStatusLineManager().setMessage(folder.getMessages().size() 
+            + " messsages in " + folder.getFullName());
+      } else if (item instanceof Account) {
+        Account account = (Account) item;
+        StatusBarHelper.getStatusLineManager().setMessage(account.getFolders().size() 
+            + " folders in " + account.getName());
       }
     }
   };
