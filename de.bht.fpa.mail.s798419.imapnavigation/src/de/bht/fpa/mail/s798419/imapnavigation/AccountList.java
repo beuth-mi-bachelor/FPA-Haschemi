@@ -12,6 +12,13 @@ public class AccountList {
     this.accounts = new ArrayList<Account>();
   }
   
+  public AccountList(Account...accounts) {
+    this.accounts = new ArrayList<Account>();
+    for (Account account : accounts) {
+      this.accounts.add(account);
+    }
+  }
+  
   public AccountList(final Collection<Account> accounts) {
     this.accounts = accounts;
   }

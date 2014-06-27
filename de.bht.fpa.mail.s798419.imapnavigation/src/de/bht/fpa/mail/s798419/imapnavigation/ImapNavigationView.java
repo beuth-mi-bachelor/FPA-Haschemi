@@ -17,7 +17,7 @@ import de.bht.fpa.mail.s000000.common.mail.testdata.RandomTestDataProvider;
 
 public class ImapNavigationView extends ViewPart {
 
-  public static final String ID = "de.bht.fpa.mail.s798419.fsnavigation.NavigationView";
+  public static final String ID = "de.bht.fpa.mail.s798419.imapnavigation.ImapNavigationView";
   public static final int[] NUMBER_OF_MESSAGES = { 20, 30, 5 };
 
   private TreeViewer viewer;
@@ -75,6 +75,10 @@ public class ImapNavigationView extends ViewPart {
 
   public void changeModel(Object m) {
     viewer.setInput(m);
+  }
+  
+  public Object getModel() {
+    return viewer.getInput();
   }
 
   private Account getDummyAccount() {

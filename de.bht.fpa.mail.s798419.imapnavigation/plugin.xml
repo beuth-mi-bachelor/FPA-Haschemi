@@ -22,5 +22,27 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.bht.fpa.mail.s798419.imapnavigation.actionSet"
+            label="Accounting"
+            visible="true">
+         <menu
+               id="accountLoaderMenu"
+               label="Account">
+            <separator
+                  name="accountLoaderGroup">
+            </separator>
+         </menu>
+         <action
+               class="de.bht.fpa.mail.s798419.imapnavigation.actions.AccountLoader"
+               id="de.bht.fpa.mail.s798419.imapnavigation.actions.AccountLoader"
+               label="Load from File..."
+               menubarPath="accountLoaderMenu/accountLoaderGroup"
+               toolbarPath="accountLoaderGroup">
+         </action>
+      </actionSet>
+   </extension>
 
 </plugin>
