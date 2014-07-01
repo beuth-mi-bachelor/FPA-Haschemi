@@ -26,6 +26,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     configurer.setInitialSize(new Point(WINDOW_WIDTH, WINDOW_HEIGHT));
     configurer.setShowCoolBar(false);
     configurer.setShowStatusLine(true);
+    configurer.setShowProgressIndicator(true);
     configurer.setTitle("FPA Mailer"); //$NON-NLS-1$
   }
 

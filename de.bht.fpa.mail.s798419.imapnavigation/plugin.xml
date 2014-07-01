@@ -30,7 +30,7 @@
             visible="true">
          <menu
                id="accountLoaderMenu"
-               label="Account">
+               label="Imap Navigation">
             <separator
                   name="accountLoaderGroup">
             </separator>
@@ -39,6 +39,13 @@
                class="de.bht.fpa.mail.s798419.imapnavigation.actions.AccountLoader"
                id="de.bht.fpa.mail.s798419.imapnavigation.actions.AccountLoader"
                label="Load from File..."
+               menubarPath="accountLoaderMenu/accountLoaderGroup"
+               toolbarPath="accountLoaderGroup">
+         </action>
+         <action
+               class="de.bht.fpa.mail.s798419.imapnavigation.actions.Synchronizer"
+               id="de.bht.fpa.mail.s798419.imapnavigation.actions.Synchronizer"
+               label="Synchronize"
                menubarPath="accountLoaderMenu/accountLoaderGroup"
                toolbarPath="accountLoaderGroup">
          </action>

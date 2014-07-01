@@ -8,6 +8,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.bht.fpa.mail.s000000.common.mail.model,
+Import-Package: de.bht.fpa.mail.s000000.common.mail.imapsync,
+ de.bht.fpa.mail.s000000.common.mail.model,
  de.bht.fpa.mail.s000000.common.mail.model.builder,
- de.bht.fpa.mail.s000000.common.mail.testdata
+ de.bht.fpa.mail.s000000.common.mail.testdata,
+ de.bht.fpa.mail.s000000.common.rcp.statusbar

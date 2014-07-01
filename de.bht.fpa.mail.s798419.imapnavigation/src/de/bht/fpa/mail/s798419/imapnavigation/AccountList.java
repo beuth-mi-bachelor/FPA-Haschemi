@@ -3,6 +3,8 @@ package de.bht.fpa.mail.s798419.imapnavigation;
 import java.util.ArrayList;
 import java.util.Collection;
 import de.bht.fpa.mail.s000000.common.mail.model.Account;
+import de.bht.fpa.mail.s000000.common.mail.model.builder.AccountBuilder;
+import de.bht.fpa.mail.s000000.common.mail.imapsync.ImapHelper;
 
 public class AccountList {
   
@@ -44,5 +46,11 @@ public class AccountList {
   public void add(Account account) {
     this.accounts.add(account);
   } 
+  
+  public static void createAccount(String name, String host, String user, String password) {
+      Account account = AccountBuilder.newAccountBuilder()
+          .host(host).username(user).password(password).name(name).build();
+      ImapHelper.saveAccount(account);
+  }
   
 }
