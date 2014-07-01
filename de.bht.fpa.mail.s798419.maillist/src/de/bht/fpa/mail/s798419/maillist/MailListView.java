@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.bind.JAXB;
 
@@ -199,6 +200,11 @@ public class MailListView extends ViewPart {
       @Override
       public void formatCell(ViewerCell cell, Object value) {
         Sender sender = (Sender) value;
+        if (sender.getPersonal() != null) {
+          cell.setText(sender.getPersonal() + " <" + sender.getEmail() + ">");
+        } else {
+          cell.setText(sender.getEmail());
+        }
         cell.setText(sender.getPersonal() + " <" + sender.getEmail() + ">");
       }
     });
@@ -209,15 +215,14 @@ public class MailListView extends ViewPart {
       @SuppressWarnings("unchecked")
       @Override
       public void formatCell(ViewerCell cell, Object value) {
-        Collection<Recipient> recipients;
-        if (value instanceof ArrayList) {
-          recipients = (ArrayList<Recipient>) value;
-        } else {
-          recipients = (LinkedList<Recipient>) value;
-        }
+        Collection<Recipient> recipients = (List<Recipient>) value;
         String recipientList = "";
         for (Recipient recipient : recipients) {
-          recipientList += recipient.getPersonal() + " <" + recipient.getEmail() + ">";
+          if (recipient.getPersonal() != null) {
+            recipientList += recipient.getPersonal() + " <" + recipient.getEmail() + ">";
+          } else {
+            recipientList += recipient.getEmail();
+          }
         }
 
         cell.setText(recipientList);
