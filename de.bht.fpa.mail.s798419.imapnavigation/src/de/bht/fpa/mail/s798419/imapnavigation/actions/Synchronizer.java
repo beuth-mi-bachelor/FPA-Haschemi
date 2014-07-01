@@ -52,8 +52,8 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
    */
   @Override
   public void run(IAction action) {
-    //AccountList.createAccount("BHT-FPA-Testaccount", "imap.gmail.com", 
-    //"bhtfpa@googlemail.com", "B-BgxkT_anr2bubbyTLM");
+    AccountList.createAccount("BHT-FPA-Testaccount", "imap.gmail.com", 
+    "bhtfpa@googlemail.com", "B-BgxkT_anr2bubbyTLM");
     
     job = new Job("Getting Account") {
       @Override
@@ -106,10 +106,11 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
     @Override
     public void done(IJobChangeEvent event) {
       if (event.getJob().getName().equals("Getting Account") && event.getJob().getResult().isOK()) {
-        addAccountToList();
         syncFolders();
       }
-      
+      if (event.getJob().getName().equals("Getting Folders") && event.getJob().getResult().isOK()) {
+        addAccountToList();
+      }
     }
 
     @Override
@@ -145,11 +146,21 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
   public void syncFolders() {
     Display.getDefault().asyncExec(new Runnable() {
       public void run() {
-        try {
-          ImapHelper.syncAllFoldersToAccount(currentAccount, null);
-        } catch (SynchronizationException e) {
-          throw new RuntimeException("Exception not handled in code", e);
-        }
+        Job syncFolders = new Job("Getting Folders") {
+          @Override
+          protected IStatus run(IProgressMonitor monitor) {
+            try {
+              ImapHelper.syncAllFoldersToAccount(currentAccount, monitor);
+            } catch (SynchronizationException e) {
+              throw new RuntimeException("Exception not handled in code", e);
+            }
+            return Status.OK_STATUS;
+          }
+        };
+        
+        syncFolders.setUser(true);
+        syncFolders.schedule();  
+        
       }
    });
   }
