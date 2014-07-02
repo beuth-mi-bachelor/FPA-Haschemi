@@ -67,15 +67,7 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
     job.schedule();   
     
     Job.getJobManager().addJobChangeListener(listener);
-    
-    /*
-    try {
-      ImapHelper.syncAllFoldersToAccount(account, null);
-    } catch (SynchronizationException e) {
-      throw new RuntimeException("Exception not handled in code", e);
-    }
 
-    */
   }
 
   /**
@@ -167,12 +159,14 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
   
   public void addAccountToList() {   
     final AccountList existingAccounts = (AccountList) view.getModel();
-    existingAccounts.add(currentAccount);
-    Display.getDefault().asyncExec(new Runnable() {
-      public void run() {
-        view.changeModel(existingAccounts);
-      }
-   });
+    if (!existingAccounts.getAccounts().contains(currentAccount)) {
+      existingAccounts.add(currentAccount);
+      Display.getDefault().asyncExec(new Runnable() {
+        public void run() {
+          view.changeModel(existingAccounts);
+        }
+     });
+    }
   }
 
   /**

@@ -12,4 +12,5 @@ Import-Package: de.bht.fpa.mail.s000000.common.mail.imapsync,
  de.bht.fpa.mail.s000000.common.mail.model,
  de.bht.fpa.mail.s000000.common.mail.model.builder,
  de.bht.fpa.mail.s000000.common.mail.testdata,
- de.bht.fpa.mail.s000000.common.rcp.statusbar
+ de.bht.fpa.mail.s000000.common.rcp.statusbar,
+ org.eclipse.ui.forms.widgets
