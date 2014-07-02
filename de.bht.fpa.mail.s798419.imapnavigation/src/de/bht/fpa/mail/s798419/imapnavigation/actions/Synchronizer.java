@@ -142,6 +142,7 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
           protected IStatus run(IProgressMonitor monitor) {
             try {
               ImapHelper.syncAllFoldersToAccount(currentAccount, monitor);
+              ImapHelper.saveAccount(currentAccount);
             } catch (SynchronizationException e) {
               throw new RuntimeException("Exception not handled in code", e);
             }
