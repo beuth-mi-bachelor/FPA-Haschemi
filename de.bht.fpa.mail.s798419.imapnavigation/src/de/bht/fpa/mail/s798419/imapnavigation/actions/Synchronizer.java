@@ -41,7 +41,6 @@ public class Synchronizer extends Job implements IWorkbenchWindowActionDelegate 
    */
   public Synchronizer() {
     super("Job");
-    
   }
 
   /**

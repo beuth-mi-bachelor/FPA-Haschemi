@@ -1,5 +1,8 @@
 package de.bht.fpa.mail.s798419.imapnavigation.actions;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogLabelKeys;
@@ -19,11 +22,11 @@ public final class NewMailDialog extends Dialog {
   private static final String DIALOG_TITLE = "Filter Configuration";
   private static final int HEIGHT = 300;
   private static final int WIDTH = 600;
-  private static final int NR_OF_COLUMNS = 3;
   private Composite container;
   private Text text;
-  private Text text_1;
-  private Text text_2;
+  private Text text1;
+  private Text text2;
+  private ArrayList<String> mail;
 
   public NewMailDialog(Shell parentShell) {
     super(parentShell);
@@ -51,30 +54,32 @@ public final class NewMailDialog extends Dialog {
     lblSubject.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
     lblSubject.setText("Subject");
     
-    text_2 = new Text(container, SWT.BORDER);
-    text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+    text2 = new Text(container, SWT.BORDER);
+    text2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
     
     Label lblText = new Label(container, SWT.NONE);
     lblText.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
     lblText.setText("Text");
     
-    text_1 = new Text(container, SWT.BORDER);
-    GridData gd_text_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-    gd_text_1.heightHint = 168;
-    text_1.setLayoutData(gd_text_1);
+    text1 = new Text(container, SWT.BORDER);
+    GridData gdText1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+    text1.setLayoutData(gdText1);
     getShell().setText(DIALOG_TITLE);
     return container;
   }
 
   @Override
   protected void createButtonsForButtonBar(Composite parent) {
-    String ok = JFaceResources.getString(IDialogLabelKeys.OK_LABEL_KEY);
     String cancel = JFaceResources.getString(IDialogLabelKeys.CANCEL_LABEL_KEY);
 
     createButton(parent, IDialogConstants.OK_ID, "Send", true);
     createButton(parent, IDialogConstants.CANCEL_ID, cancel, false);
   }
 
+  public Collection<String> getValues() {
+    return mail;
+  }
+  
   /**
    * Return the initial size of the dialog.
    */
@@ -85,11 +90,17 @@ public final class NewMailDialog extends Dialog {
 
   @Override
   protected void okPressed() {
+    mail = new ArrayList<String>();
+    mail.add(text.getText());
+    mail.add(text2.getText());
+    mail.add(text1.getText());
+    
     super.okPressed();
   }
 
   @Override
   protected void cancelPressed() {
+    mail = null;
     super.cancelPressed();
   }
 
